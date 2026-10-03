@@ -240,3 +240,35 @@ See `agentcad docs artifacts` for initialization, overrides, and recovery.
   options={"color": "red"})` creates stable part handles, per-part metrics, and
   colored GLB output.
 <!-- agentcad:end -->
+
+## Clarity
+
+Write information for Willem in Simplified Technical English.
+The same instruction applies to a pull request and to a commit message.
+The same instruction applies to the text in a README and in other manuals.
+Use STE at a level of approximately 80 percent.
+Do not try to obey the full ASD-STE100 specification.
+Use the skill in `.agents/skills/simplified-technical-english/`.
+
+STE does not apply to these items:
+
+- Code
+- Identifiers
+- Math
+- CLI output
+- Quoted error text
+
+When you must show structure, flow, or architecture, use a mermaid diagram.
+Do not use long text for this information.
+For a large result, you can give one HTML file that contains all the information.
+The HTML file is temporary.
+Put that file in git only when Willem tells you to keep the file.
+
+Make a video only when Willem tells you to make a video.
+Do not add an API key.
+Do not add a secret.
+
+You can do an optional check of the manuals with `scripts/ste_check.py`.
+The result of the check is information only.
+The check does not stop CI.
+The check is not a gate.
