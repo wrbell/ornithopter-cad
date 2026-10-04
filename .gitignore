@@ -11,3 +11,43 @@ build/
 .agentcad/
 ci_out/
 .DS_Store
+
+# --- Collection template additions (standards/templates/gitignore) ----
+# Merged 2026-10-04. The rules above are kept unchanged.
+
+# Local data
+.local/
+data/raw/
+*.sqlite
+*.sqlite3
+
+# Secrets: .env stays out; the documented example file stays in.
+.env
+.env.*
+!.env.example
+secrets/
+*.pem
+*.key
+
+# Copyrighted handouts: course and vendor PDFs stay local (list them in
+# INDEX.md with a SHA-256). Re-include your own PDFs by exact path below.
+*.pdf
+
+# Tool output
+.build/qa/
+.chart-data-*/
+.revisions/
+dist/
+out/*.html
+
+# Office temp
+~$*
+
+# Python and Jupyter
+*.py[cod]
+.mypy_cache/
+venv/
+.ipynb_checkpoints/
+
+# OS
+Thumbs.db

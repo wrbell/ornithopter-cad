@@ -36,3 +36,8 @@ ignore = ["E731"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["ornitho"]
+
+[tool.ruff.format]
+# Byte-for-byte copies from the standards repo (adopt_standards.py checks their
+# sha256). They use the standards Ruff style, so `make lint` does not format them.
+exclude = ["enforcement/**", "tools/agents_md_lint.py", "tools/check_docs.py"]

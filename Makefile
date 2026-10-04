@@ -8,6 +8,20 @@ MODEL = models/wingtip_agentcad.py
 LABEL ?= dev
 ARGS ?=
 export AGENTCAD_RUN_TIMEOUT_S ?= 600
+AGENTCAD_MANUAL = docs/AGENTCAD-MANUAL.md
+
+# Put the generated agentcad guide between the markers in $(AGENTCAD_MANUAL).
+# `agentcad instructions install` can only write AGENTS.md/CLAUDE.md, so it is not used.
+define SPLICE_MANUAL
+import json, pathlib, sys
+path = pathlib.Path(sys.argv[1])
+text = path.read_text()
+block = json.load(sys.stdin)["content"].rstrip()
+start = text.index("<!-- agentcad:start -->")
+end = text.index("<!-- agentcad:end -->") + len("<!-- agentcad:end -->")
+path.write_text(text[:start] + block + text[end:])
+endef
+export SPLICE_MANUAL
 
 .PHONY: setup setup-main setup-agentcad smoke run test slow lint fmt clean \
         agentcad-dry agentcad-run agentcad-import agentcad-smoke agentcad-guide agentcad-reset mcp
@@ -60,9 +74,9 @@ agentcad-import:  ## adopt the main-kernel STEP from `make run` as an agentcad v
 agentcad-smoke:   ## end-to-end contract check of the agentcad integration (same script CI runs)
 	$(BIN)/python smoke_agentcad.py --agentcad $(AGENTCAD)
 
-agentcad-guide:   ## refresh the generated skill + AGENTS.md block after upgrading agentcad
+agentcad-guide:   ## refresh the generated skill + docs/AGENTCAD-MANUAL.md after upgrading agentcad
 	$(AGENTCAD) skill install
-	$(AGENTCAD) instructions install --target agents
+	$(AGENTCAD) instructions show --runtime cadquery | $(ACBIN)/python -c "$$SPLICE_MANUAL" $(AGENTCAD_MANUAL)
 
 agentcad-reset:   ## wipe agentcad version history (also needed after moving/renaming the folder)
 	rm -rf build && $(AGENTCAD) init --name ornithopter-cad --runtime cadquery --no-agent-setup

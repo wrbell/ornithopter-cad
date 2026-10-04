@@ -1,5 +1,16 @@
 # Ornithopter CAD — parametric wingtip + agent-driven CAD loop
 
+Parametric S1223 TPU wingtip for an 8-wing ornithopter drone (CadQuery build).
+
+Status (2026-10-04): the default build is valid (CI green on `main` on
+2026-10-03). The committed `out/report.txt` gives 170.6 g at 2.5 mm wall
+against the 110 g target. The aft hole is a placeholder until the rib is
+measured.
+
+Course: none
+
+Agent file: [AGENTS.md](AGENTS.md) holds the rules for AI coding agents.
+
 [![ci](https://github.com/wrbell/ornithopter-cad/actions/workflows/ci.yml/badge.svg)](https://github.com/wrbell/ornithopter-cad/actions/workflows/ci.yml)
 
 Parametric S1223 wingtip (TPU shell, FDM-printed) for an 8-wing flapping-wing (ornithopter) drone.
@@ -9,6 +20,20 @@ diff, an A/B viewer, and an MCP server), so the design can be iterated by talkin
 
 No FreeCAD: geometry is built headless with **CadQuery (OpenCascade)** from pip, rendered with **pyvista**
 off-screen, 2D work in **numpy + shapely**. Everything lives in this repo except the pip wheels.
+
+## Contents
+
+- [Setup](#setup-macos-or-linux-python-310312)
+- [Run](#run)
+- [Using with Claude Code](#using-with-claude-code)
+- [Coordinate frame](#coordinate-frame)
+- [Airfoil handling](#airfoil-handling-ornithoairfoilpy)
+- [Geometry](#geometry-ornithogeometrypy-ornithowingpy)
+- [Development](#development)
+- [Loop](#loop)
+- [Recreate](#recreate)
+- [Deliverables](#deliverables)
+- [License](#license)
 
 ## Setup (macOS or Linux; Python 3.10–3.12)
 
@@ -77,7 +102,7 @@ Notes:
   estimate in the agentcad `warnings` array.
 - agentcad artifacts go to `build/` (gitignored). `make agentcad-import LABEL=x` adopts the main-kernel
   `out/wingtip.step` as an agentcad version for measuring and diffing.
-- `make agentcad-guide` refreshes the generated skill and the `AGENTS.md` block after upgrading agentcad.
+- `make agentcad-guide` refreshes the generated skill and `docs/AGENTCAD-MANUAL.md` after upgrading agentcad.
 - Moved or renamed the folder? `rm -rf .venv .venv-agentcad build && make setup`.
 - agentcad is Apache-2.0 and installed from PyPI, not vendored.
 
@@ -141,3 +166,29 @@ agentcad contract check (`smoke_agentcad.py`) in a second job.
 1. edit `CONFIG` (or ask Claude) → 2. `make run` or `make agentcad-run` → 3. look at the PNGs → 4. read
 `out/report.txt` → repeat. Every render is regenerated on every run; the title line of each PNG carries the key
 parameters.
+
+## Recreate
+
+| Command | What it does | Limit |
+| --- | --- | --- |
+| `make setup` | Builds `.venv` and `.venv-agentcad` from the pinned requirements files | Python 3.10–3.12; about 10 min the first time |
+| `make run` | Builds the wingtip: STEP/STL, the PNGs in `out/`, `out/report.txt`, `out/wingtip_run.json` | STEP/STL are gitignored; rebuild them |
+| `.venv/bin/python wingtip.py --no-render --out ci_out` | The headless default build that CI runs | No PNGs |
+| `make agentcad-run LABEL=x` | A versioned agentcad run with preview and renders under `build/` | `build/` is gitignored; agentcad's volume is about 25 % low, so it is not the mass |
+
+## Deliverables
+
+The README calls the STEP/STL, the renders and the mass table the
+engineering deliverables. The STEP/STL are not tracked; `make run` rebuilds
+them. A hand-off record (file, SHA-256, date) does not exist yet.
+
+| File | SHA-256 | Submitted |
+| --- | --- | --- |
+| `out/wingtip.step`, `out/wingtip.stl` | TBD (not tracked; rebuilt by `make run`) | TBD |
+
+## License
+
+No `LICENSE` file exists. `pyproject.toml` declares `Apache-2.0` in the
+package metadata. TBD: Willem decides the license and adds a `LICENSE` file.
+
+`SPDX-License-Identifier: TBD (Willem decides)`
