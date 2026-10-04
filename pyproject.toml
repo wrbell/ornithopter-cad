@@ -25,7 +25,9 @@ packages = ["ornitho"]   # flat layout: tests/, models/, data/, out/ are not pac
 [tool.ruff]
 line-length = 120
 target-version = "py311"
-extend-exclude = [".venv", ".venv-agentcad", "build", "out", "data"]
+# The last path is a vendored third-party skill. Ruff fails on its Python
+# (E741 and format). Do not edit those upstream files to satisfy the linter.
+extend-exclude = [".venv", ".venv-agentcad", "build", "out", "data", ".agents/skills/simplified-technical-english"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "NPY"]
