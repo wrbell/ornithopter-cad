@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - name: Lint Markdown
         if: "${{ hashFiles('**/*.md') != '' }}"
-        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0
+        uses: DavidAnson/markdownlint-cli2-action@696eb3f2509270d7b882d2aa68347bc676e7af34  # v25.0.0
         with:
           config: enforcement/markdownlint/.markdownlint-cli2.yaml
           globs: "**/*.md"
@@ -32,7 +32,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
       - name: Set up Node
         if: "${{ hashFiles('**/*.md') != '' }}"
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
         with:
           node-version: "22"
       - name: Spell check
@@ -55,14 +55,14 @@ jobs:
         run: python3 tools/check_docs.py
       - name: Lint README headings
         if: "${{ hashFiles('templates/README.template.md') != '' }}"
-        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0
+        uses: DavidAnson/markdownlint-cli2-action@696eb3f2509270d7b882d2aa68347bc676e7af34  # v25.0.0
         with:
           config: enforcement/docs/readme.markdownlint-cli2.jsonc
           globs: |
             templates/README.template.md
       - name: Lint decision record headings
         if: "${{ hashFiles('docs/decisions/*.md') != '' }}"
-        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0
+        uses: DavidAnson/markdownlint-cli2-action@696eb3f2509270d7b882d2aa68347bc676e7af34  # v25.0.0
         with:
           config: enforcement/docs/adr.markdownlint-cli2.jsonc
           globs: |
@@ -91,7 +91,7 @@ jobs:
         if: >-
           ${{ hashFiles('enforcement/markdownlint/.markdownlint-cli2.yaml') != ''
           && hashFiles('**/AGENTS.md') != '' }}
-        uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff  # v24.2.0
+        uses: DavidAnson/markdownlint-cli2-action@696eb3f2509270d7b882d2aa68347bc676e7af34  # v25.0.0
         with:
           config: enforcement/markdownlint/.markdownlint-cli2.yaml
           globs: "**/AGENTS.md"
@@ -108,7 +108,7 @@ jobs:
         if: >-
           ${{ hashFiles('enforcement/commitlint/commitlint.config.js',
           'commitlint.config.js') != '' }}
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020  # v7.0.0
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1  # v7.1.0
         with:
           node-version: "22"
       - name: Install commitlint
